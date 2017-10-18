@@ -1,6 +1,7 @@
 import ImageClassifierView from "./classifierView/containers/ImageClassifierView.jsx";
 import StatsView from "./statisticsView/containers/StatsView.jsx";
 import ConfigView from "./configurationView/containers/ConfigView.jsx";
+import React from 'react';
 
 export const VIEWS_CONFIG = {
   CONFIG: [
@@ -20,7 +21,9 @@ export const NAVBAR_CONFIG = {
   ],
   titleSrc: {
     path: 'images/brand.svg',
-    alt: 'Radanalytics-Image-Recognition-Logo'
+    alt: 'Radanalytics Image-Recognition Logo',
+    useImage: false,
+    title: <span><label>RecognEyes</label> - Image Recognition Demo App</span>,
   }
 };
 
