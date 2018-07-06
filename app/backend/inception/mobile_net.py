@@ -4,9 +4,9 @@ import numpy as np
 import tensorflow as tf
 import cv2
 
-data_url = "http://download.tensorflow.org/models/mobilenet_v1_1.0_224_frozen.tgz"
+data_url = "http://download.tensorflow.org/models/mobilenet_v1_1.0_192_frozen.tgz"
+model_name = "_".join(os.path.basename(data_url).split('_')[0:4])
 data_dir = ".mobile_net"
-sub_dir = "mobilenet_v1_1.0_224"
 path_frozen_graph = "frozen_graph.pb"
 path_quantized_graph = "quantized_graph.pb"
 path_class_to_name = "labels.txt"
@@ -25,7 +25,7 @@ def maybe_download():
 def create_model_info(architecture, model_file_name=None, label_file_name=None):
     architecture = architecture.lower()
 
-    size = int(architecture.split("_")[3])
+    size = int(model_name.split("_")[3])
     is_quantized = bool(
         len(architecture.split("_")) == 5 and architecture.split("_")[4] == "quantized")
     dirname = "_".join(architecture.split("_")[:4])
@@ -34,7 +34,7 @@ def create_model_info(architecture, model_file_name=None, label_file_name=None):
             model_base_name = path_quantized_graph
         else:
             model_base_name = path_frozen_graph
-        model_file_name = os.path.join(data_dir, sub_dir, model_base_name)
+        model_file_name = os.path.join(data_dir, model_name, model_base_name)
 
     if not label_file_name:
         label_file_name = os.path.join("checkpoints", 'inception_v3',
@@ -98,7 +98,7 @@ class NameLookup:
         self._cls_to_name = {}   # Map from cls to uid.
 
         # Read the uid-to-name mappings from file.
-        path = os.path.join(data_dir, sub_dir, path_class_to_name)
+        path = os.path.join(data_dir, model_name, path_class_to_name)
         with open(path, 'r') as f:
             # Read all lines from the file.
             lines = f.readlines()
