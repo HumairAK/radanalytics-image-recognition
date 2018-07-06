@@ -178,6 +178,7 @@ def mobilenet_get_scores(img_path):
     model = mobile_net.MobileNet()
     pred = model.classify(image_path=img_path)
     scores = model.get_scores(pred=pred, k=5)
+
     return scores
 
 
@@ -218,28 +219,6 @@ def img_recognize():
 
     remote_cache.put("time_taken", str(total))
 
-    return Response(
-        json.dumps(resp),
-        status=200, mimetype="application/json")
-
-
-@basepage.route("/api/v1/mobile_net", methods=['POST'])
-def mobile_net_test():
-    start = timer()
-
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-
-    file = request.files['file']
-
-    filename = secure_filename(file.filename)
-    img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(img_path)
-
-    scores = mobilenet_get_scores(img_path)
-
-    # Send data
-    resp = {'pred': scores}
     return Response(
         json.dumps(resp),
         status=200, mimetype="application/json")
